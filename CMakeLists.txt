@@ -4,7 +4,11 @@ message(STATUS "Project SDK Version: ${CONFIG_PROJECT_SDK_VERSION}")
 
 find_package(Git QUIET)
 set(BFLB_GIT_DIRTY 1)
-if(GIT_FOUND)
+if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/GIT_HASH")
+    # Release archives carry no git metadata and record the clean commit hash instead.
+    file(STRINGS "${CMAKE_CURRENT_SOURCE_DIR}/GIT_HASH" BFLB_GIT_HASH LIMIT_COUNT 1)
+    set(BFLB_GIT_DIRTY 0)
+elseif(GIT_FOUND)
     execute_process(
         COMMAND ${GIT_EXECUTABLE} rev-parse --short=8 HEAD
         WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
