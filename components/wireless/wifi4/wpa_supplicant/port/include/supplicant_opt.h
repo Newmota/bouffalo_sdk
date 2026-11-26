@@ -20,7 +20,10 @@
 //#define DEBUG_PRINT
 //#define WPS_DEBUG
 
+/* CONFIG_WIFI4_EXTERNAL_HASH comes from autoconfig.h. */
+#ifndef CONFIG_WIFI4_EXTERNAL_HASH
 #define USE_MBEDTLS_CRYPTO
+#endif
 
 // TODO sync with FULLMAC config
 #define CONFIG_AUTHENTICATOR_MAX_STA 4

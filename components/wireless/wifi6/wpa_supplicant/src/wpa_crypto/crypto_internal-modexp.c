@@ -14,7 +14,7 @@
 
 
 /* The Mbed TLS backend supplies this independently of WPS support. */
-#if !defined(CONFIG_WPS) && !defined(CONFIG_USE_MBEDTLS)
+#ifndef CONFIG_USE_MBEDTLS
 int crypto_dh_init(u8 generator, const u8 *prime, size_t prime_len, u8 *privkey,
 		   u8 *pubkey)
 {
@@ -89,7 +89,7 @@ fail:
 
 
 /* The Mbed TLS backend supplies this independently of WPS support. */
-#if !defined(CONFIG_WPS) && !defined(CONFIG_USE_MBEDTLS)
+#ifndef CONFIG_USE_MBEDTLS
 int crypto_mod_exp(const u8 *base, size_t base_len,
 		   const u8 *power, size_t power_len,
 		   const u8 *modulus, size_t modulus_len,

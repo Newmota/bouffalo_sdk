@@ -14,4 +14,14 @@ config VIRT_DEV_MAX
     help
       Maximum number of simultaneous virtual Wi-Fi interfaces.
 
+config WIFI4_EXTERNAL_HASH
+    bool "Wi-Fi 4 supplicant hashes from the application"
+    default n
+    help
+      Build the supplicant without Mbed TLS: leave out md5-internal.c,
+      sha1-internal.c and sha256-internal.c, whose non-Mbed TLS paths do
+      not build, and take PBKDF2 and AES-CBC from their internal paths.
+      The application provides md5_vector, sha1_vector and sha256_vector.
+      SAE stays on blcrypto_suite.
+
 endmenu

@@ -89,8 +89,8 @@
 
 #define CONFIG_WEP
 
-// for now only used for SAE
-#ifdef CONFIG_USE_MBEDTLS
+// for now only used for SAE; CONFIG_WIFI6_EXTERNAL_CRYPTO comes from autoconfig.h
+#if defined(CONFIG_USE_MBEDTLS) || defined(CONFIG_WIFI6_EXTERNAL_CRYPTO)
 #define CONFIG_SME
 #define CONFIG_SAE
 #define CONFIG_ECC

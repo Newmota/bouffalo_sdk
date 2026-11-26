@@ -24,6 +24,27 @@ config WIFI6_WPS
       Build WPS enrollee, registrar and EAP-WSC support. Disable for images
       that provision credentials directly. Wi-Fi Direct requires WPS.
 
+config WIFI6_EXTERNAL_CRYPTO
+    bool "Wi-Fi 6 supplicant crypto from the application"
+    depends on WIFI6
+    default n
+    help
+      Build the supplicant without its Mbed TLS backend (crypto_mbedtls.c,
+      crypto_mbedtls_misc.c and sha1-pbkdf2.c). The application provides
+      the hostap crypto.h functions instead: bignum and EC for SAE, the
+      MD5, SHA-1, SHA-256, SHA-384 and SHA-512 vectors, HMAC, pbkdf2_sha1
+      and the AES block functions. WPS keeps Diffie-Hellman on the
+      internal bignum code and takes AES-128-CBC from aes-cbc.c.
+
+config WIFI6_WPA_STACK_DEPTH
+    int "Wi-Fi 6 supplicant task stack depth in words"
+    depends on WIFI6
+    default 0
+    help
+      Stack depth for the wpa_supplicant task, which the prebuilt fhost
+      library creates with 1408 words. A larger value replaces it; 0 or a
+      smaller value keeps the library's depth.
+
 config WL80211
     bool "WL80211 Wi-Fi interface"
     default n

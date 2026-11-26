@@ -123,6 +123,10 @@ rtos_task_t rtos_task_get_handle(const char *task_name)
     return hdl;
 }
 
+#if defined(CONFIG_WIFI6_WPA_STACK_DEPTH) && CONFIG_WIFI6_WPA_STACK_DEPTH > 0
+void wpa_supplicant_main(void *env);
+#endif
+
 int rtos_task_create(rtos_task_fct func,
                      const char * const name,
                      uint8_t task_id,
@@ -134,7 +138,16 @@ int rtos_task_create(rtos_task_fct func,
     BaseType_t res;
     TaskHandle_t handle;
 
-    res = xTaskCreate((TaskFunction_t)func, name, stack_depth, params, prio, &handle);
+    uint16_t depth = stack_depth;
+
+#if defined(CONFIG_WIFI6_WPA_STACK_DEPTH) && CONFIG_WIFI6_WPA_STACK_DEPTH > 0
+    /* The prebuilt fhost library fixes the supplicant's stack; CONFIG_WIFI6_WPA_STACK_DEPTH
+       enlarges it for backends with larger stack frames. */
+    if (func == (rtos_task_fct)wpa_supplicant_main && depth < CONFIG_WIFI6_WPA_STACK_DEPTH)
+        depth = CONFIG_WIFI6_WPA_STACK_DEPTH;
+#endif
+
+    res = xTaskCreate((TaskFunction_t)func, name, depth, params, prio, &handle);
 
     if (res == pdFAIL)
         return 1;

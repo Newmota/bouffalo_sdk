@@ -69,7 +69,9 @@ exit:
 
     return ret;
 }
-#elif defined(BL602)
+#elif defined(BL602) && !defined(CONFIG_WIFI4_EXTERNAL_HASH)
+/* CONFIG_WIFI4_EXTERNAL_HASH uses the generic PBKDF2 below on the application's SHA-1;
+   bl_sec_psk() is not part of this SDK. */
 
 #include <bl_sec.h>
 int pbkdf2_sha1(const char *passphrase, const char *ssid, size_t ssid_len,
